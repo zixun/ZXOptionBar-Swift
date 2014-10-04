@@ -1,0 +1,51 @@
+//
+//  ViewController.swift
+//  ZXOptionBarDemo
+//
+//  Created by 子循 on 14-10-4.
+//  Copyright (c) 2014年 zixun. All rights reserved.
+//
+
+import UIKit
+
+class ViewController: UIViewController,ZXOptionBarDelegate,ZXOptionBarDataSource {
+    
+    internal var test: ZXOptionBar?
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        test = ZXOptionBar(frame: CGRectMake(0, 100, UIScreen.mainScreen().bounds.size.width, 100), barDelegate: self, barDataSource: self)
+        test?.backgroundColor = UIColor.redColor()
+        self.view.addSubview(test!)
+        
+        
+        
+        
+    }
+    
+    
+    func numberOfColumnsInOptionBar(optionBar: ZXOptionBar) -> Int {
+        return 20
+    }
+    func optionBar(optionBar: ZXOptionBar, cellForColumnAtIndex index: Int) -> ZXOptionBarCell {
+        
+        var cell: CustomOptionBarCell? = optionBar.dequeueReusableCellWithIdentifier("ZXOptionBarDemo") as? CustomOptionBarCell
+        if cell == nil {
+            cell = CustomOptionBarCell(style: .ZXOptionBarCellStyleDefault, reuseIdentifier: "ZXOptionBarDemo")
+        }
+        
+        return cell!
+        
+    }
+    
+    func optionBar(optionBar: ZXOptionBar, widthForColumnsAtIndex index: Int) -> Float {
+        return 60
+    }
+    
+    func optionBar(optionBar: ZXOptionBar, willDisplayCell cell: ZXOptionBarCell, forColumnAtIndex index: Int) {
+        println(cell)
+        println(index)
+    }
+    
+    
+}
+
