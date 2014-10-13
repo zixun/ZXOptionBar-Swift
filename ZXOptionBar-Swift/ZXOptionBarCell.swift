@@ -12,10 +12,10 @@ enum ZXOptionBarCellStyle{
     case ZXOptionBarCellStyleDefault
 }
 
-
+// MARK: - ZXOptionBarCell
 class ZXOptionBarCell: UIView {
     
-    
+    // MARK: - Internal Var
     internal var index: Int?
     
     internal var indicatorColor: UIColor?
@@ -27,10 +27,10 @@ class ZXOptionBarCell: UIView {
         set { optionBarCellDidSelectedFlag = newValue }
     }
     
-    //readOnly
+    // MARK: - ReadOnly Var
     private(set) var reuseIdentifier: String?
     
-    //private
+    // MARK: - Private Var
     private var optionBarCellDidMovedFlag: Bool = false
     
     private var optionBarCellDidSelectedFlag: Bool = false
@@ -74,7 +74,8 @@ class ZXOptionBarCell: UIView {
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
         super.touchesEnded(touches, withEvent: event)
         if optionBarCellDidMovedFlag == false {
-            //TODO: self.optionBar delegate
+
+            self.optionBar?.selectColumnAtIndex(self.index!, origin: ZXOptionBarOrigin.ZXOptionBarOriginTap)
         }
     }
     

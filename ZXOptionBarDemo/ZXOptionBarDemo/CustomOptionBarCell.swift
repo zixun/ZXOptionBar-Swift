@@ -10,36 +10,51 @@ import UIKit
 
 class CustomOptionBarCell: ZXOptionBarCell {
 
-    var textLabel: UILabel?
+    let textLabel: UILabel = {
+        let label = UILabel(frame: CGRectZero)
+        label.textAlignment = NSTextAlignment.Center
+        label.font = UIFont.systemFontOfSize(12)
+        return label
+    }()
+    
+    let icon: UIImageView = {
+        return UIImageView(frame: CGRectZero)
+    }()
     
     override internal var index: Int? {
         didSet {
             if index != nil{
-                textLabel?.text = "\(index!)"
+                textLabel.text = "bra-\(index!)"
             }
 
+        }
+    }
+    
+    override internal var selected: Bool {
+        didSet {
+            if selected {
+                icon.image = UIImage(named: "bra_focus")
+            }else{
+                icon.image = UIImage(named: "bra")
+            }
         }
     }
     
     override init(style: ZXOptionBarCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        
-        textLabel = UILabel(frame: CGRectZero)
-        textLabel!.backgroundColor = UIColor.blueColor()
-        textLabel!.textAlignment = .Center
-        textLabel?.font = UIFont.systemFontOfSize(12)
-        self.addSubview(textLabel!)
+        self.addSubview(icon)
+        self.addSubview(textLabel)
     }
 
     required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
     
     
     override func layoutSubviews() {
-        textLabel?.frame = CGRectMake(self.bounds.size.width*0.1, 0, self.bounds.size.width*0.8, 60)
-        textLabel?.text = "\(index!)"
+        icon.frame = CGRectMake(5, 20, 50, 50)
+        textLabel.frame = CGRectMake(5, 80, 50, 10)
     }
 
 }

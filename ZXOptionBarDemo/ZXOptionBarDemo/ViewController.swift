@@ -10,19 +10,17 @@ import UIKit
 
 class ViewController: UIViewController,ZXOptionBarDelegate,ZXOptionBarDataSource {
     
-    internal var test: ZXOptionBar?
+    internal var optionBar: ZXOptionBar?
     override func viewDidLoad() {
         super.viewDidLoad()
-        test = ZXOptionBar(frame: CGRectMake(0, 100, UIScreen.mainScreen().bounds.size.width, 100), barDelegate: self, barDataSource: self)
-        test?.backgroundColor = UIColor.redColor()
-        self.view.addSubview(test!)
-        
-        
-        
-        
+        optionBar = ZXOptionBar(frame: CGRectMake(0, 100, UIScreen.mainScreen().bounds.size.width, 100), barDelegate: self, barDataSource: self)
+        self.view.addSubview(optionBar!)
     }
     
     
+    
+    
+    // MARK: - ZXOptionBarDataSource
     func numberOfColumnsInOptionBar(optionBar: ZXOptionBar) -> Int {
         return 20
     }
@@ -37,6 +35,7 @@ class ViewController: UIViewController,ZXOptionBarDelegate,ZXOptionBarDataSource
         
     }
     
+    // MARK: - ZXOptionBarDelegate
     func optionBar(optionBar: ZXOptionBar, widthForColumnsAtIndex index: Int) -> Float {
         return 60
     }
