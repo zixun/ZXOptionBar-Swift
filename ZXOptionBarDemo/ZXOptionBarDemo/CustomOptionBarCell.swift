@@ -24,7 +24,7 @@ class CustomOptionBarCell: ZXOptionBarCell {
     override internal var index: Int? {
         didSet {
             if index != nil{
-                textLabel.text = "bra-\(index!)"
+                println(index)
             }
 
         }

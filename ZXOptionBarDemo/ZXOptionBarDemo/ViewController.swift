@@ -30,7 +30,7 @@ class ViewController: UIViewController,ZXOptionBarDelegate,ZXOptionBarDataSource
         if cell == nil {
             cell = CustomOptionBarCell(style: .ZXOptionBarCellStyleDefault, reuseIdentifier: "ZXOptionBarDemo")
         }
-        
+        cell!.textLabel.text = "Bra-\(index)"
         return cell!
         
     }
