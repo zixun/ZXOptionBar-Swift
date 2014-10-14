@@ -15,7 +15,7 @@ enum ZXOptionBarCellStyle{
 // MARK: - ZXOptionBarCell
 class ZXOptionBarCell: UIView {
     
-    // MARK: - Internal Var
+    // MARK: Internal Var
     internal var index: Int?
     
     internal var indicatorColor: UIColor?
@@ -27,10 +27,10 @@ class ZXOptionBarCell: UIView {
         set { optionBarCellDidSelectedFlag = newValue }
     }
     
-    // MARK: - ReadOnly Var
+    // MARK: ReadOnly Var
     private(set) var reuseIdentifier: String?
     
-    // MARK: - Private Var
+    // MARK: Private Var
     private var optionBarCellDidMovedFlag: Bool = false
     
     private var optionBarCellDidSelectedFlag: Bool = false
@@ -43,11 +43,7 @@ class ZXOptionBarCell: UIView {
     }
 
     required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    internal func animationWidthGradient(gradient: CGFloat) {
-        //override this method to add custom animation
+        super.init(coder: aDecoder)
     }
     
     internal func prepareForReuse() {
@@ -60,7 +56,9 @@ class ZXOptionBarCell: UIView {
     internal func prepareForDisplay() {
         self.removeAllAnimations()
     }
-    
+}
+
+extension ZXOptionBarCell {
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         super.touchesBegan(touches, withEvent: event)
         optionBarCellDidMovedFlag = false
@@ -74,7 +72,7 @@ class ZXOptionBarCell: UIView {
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
         super.touchesEnded(touches, withEvent: event)
         if optionBarCellDidMovedFlag == false {
-
+            
             self.optionBar?.selectColumnAtIndex(self.index!, origin: ZXOptionBarOrigin.ZXOptionBarOriginTap)
         }
     }
@@ -83,13 +81,14 @@ class ZXOptionBarCell: UIView {
         super.touchesCancelled(touches, withEvent: event)
         optionBarCellDidMovedFlag = false
     }
-    
+}
+
+// MARK: - ZXOptionBarCell - Private Extension
+extension ZXOptionBarCell {
     private func removeAllAnimations() {
         self.layer.removeAllAnimations()
         for view in self.subviews {
             view.layer.removeAllAnimations()
         }
     }
-    
-
 }

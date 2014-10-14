@@ -75,7 +75,6 @@ class ZXOptionBar: UIScrollView {
         
         reusableOptionCells = Dictionary<String, NSMutableArray>()
         visibleItems = Dictionary<String, ZXOptionBarCell>()
-        
     }
     
     internal func selectColumnAtIndex(index: Int, origin:ZXOptionBarOrigin) {
@@ -91,7 +90,6 @@ class ZXOptionBar: UIScrollView {
             self.selectedIndex = index
         }
         
-        
         if origin == ZXOptionBarOrigin.ZXOptionBarOriginTap {
             if self.barDelegate!.respondsToSelector(Selector("optionBar:didSelectColumnAtIndex:")) {
                 self.barDelegate!.optionBar!(self, didSelectColumnAtIndex: index)
@@ -99,8 +97,6 @@ class ZXOptionBar: UIScrollView {
         }
         
         self.scrollByIndex(index)
-        
-        
     }
     
     internal func deselectColumnAtIndex(index: Int) {
@@ -119,7 +115,6 @@ class ZXOptionBar: UIScrollView {
                 self.barDelegate!.optionBar!(self, didDeselectColumnAtIndex: index)
             }
         }
-        
     }
     
     internal func dequeueReusableCellWithIdentifier(identifier: String) -> AnyObject? {
@@ -149,7 +144,10 @@ class ZXOptionBar: UIScrollView {
     }
     
     
-    // MARK: Private Method
+}
+
+// MARK: - ZXOptionBar - Private Extension
+extension ZXOptionBar {
     
     private func scrollByIndex(index: Int) {
         
@@ -160,7 +158,7 @@ class ZXOptionBar: UIScrollView {
         
         var columnWidthCountRight: Float = 0.0
         for var i = index + 1; i < self.columnCount(); i++ {
-             columnWidthCountRight += self.columnWidthAtIndex(i)
+            columnWidthCountRight += self.columnWidthAtIndex(i)
         }
         
         if columnWidthCountLeft < Float(self.bounds.size.width) / 2.0 {
@@ -216,7 +214,7 @@ class ZXOptionBar: UIScrollView {
             cell.prepareForDisplay()
             cell.index = indexToAdd
             cell.selected = (indexToAdd == self.selectedIndex)
-    
+            
             if self.barDelegate!.respondsToSelector(Selector("optionBar:willDisplayCell:forColumnAtIndex:")) {
                 self.barDelegate!.optionBar!(self, willDisplayCell: cell, forColumnAtIndex: indexToAdd)
             }
@@ -226,7 +224,7 @@ class ZXOptionBar: UIScrollView {
             
         }
     }
-
+    
     private func enqueueReusableCell(cell: ZXOptionBarCell) {
         if let identifier: String = cell.reuseIdentifier {
             var array: NSMutableArray? = self.reusableOptionCells[identifier]
@@ -264,7 +262,7 @@ class ZXOptionBar: UIScrollView {
         }
         return indexs
     }
-
+    
     private func columnCount() -> Int {
         return self.barDataSource!.numberOfColumnsInOptionBar(self)
     }
@@ -302,5 +300,4 @@ class ZXOptionBar: UIScrollView {
     private func indexIsValid(index: Int) -> Bool {
         return index >= 0 && index < self.columnCount()
     }
-    
 }
