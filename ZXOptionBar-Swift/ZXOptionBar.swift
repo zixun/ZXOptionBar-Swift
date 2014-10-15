@@ -52,8 +52,17 @@ class ZXOptionBar: UIScrollView {
     private var reusableOptionCells: Dictionary<String, NSMutableArray>!
     
     private var visibleItems: Dictionary<String, ZXOptionBarCell>!
+
+    private var flags: ZXOptionBarFlag = ZXOptionBarFlag()
     
-    private var flag_layoutSubviewsReentrancyGuard: Bool = true
+    // MARK: Private ZXOptionBarFlag
+    private struct ZXOptionBarFlag {
+        
+        var respondsToDidSelectColumnAtIndexSelector: Bool = false
+        var respondsToDeselectColumnAtIndex: Bool = false
+        
+        var layoutSubviewsReentrancyGuard: Bool = true
+    }
     
     // MARK: Method
     convenience init(frame: CGRect, barDelegate: ZXOptionBarDelegate, barDataSource:ZXOptionBarDataSource ) {
@@ -62,6 +71,9 @@ class ZXOptionBar: UIScrollView {
         self.barDataSource = barDataSource
         self.barDelegate = barDelegate
 
+        flags.respondsToDidSelectColumnAtIndexSelector = self.barDelegate!.respondsToSelector(Selector("optionBar:didSelectColumnAtIndex:"))
+        flags.respondsToDeselectColumnAtIndex = self.barDelegate!.respondsToSelector(Selector("optionBar:didDeselectColumnAtIndex:"))
+        
         self.showsHorizontalScrollIndicator = false
         self.showsVerticalScrollIndicator = false
         self.backgroundColor = UIColor.whiteColor()
@@ -75,6 +87,8 @@ class ZXOptionBar: UIScrollView {
         
         reusableOptionCells = Dictionary<String, NSMutableArray>()
         visibleItems = Dictionary<String, ZXOptionBarCell>()
+
+        
     }
     
     internal func selectColumnAtIndex(index: Int, origin:ZXOptionBarOrigin) {
@@ -91,7 +105,7 @@ class ZXOptionBar: UIScrollView {
         }
         
         if origin == ZXOptionBarOrigin.ZXOptionBarOriginTap {
-            if self.barDelegate!.respondsToSelector(Selector("optionBar:didSelectColumnAtIndex:")) {
+            if flags.respondsToDidSelectColumnAtIndexSelector {
                 self.barDelegate!.optionBar!(self, didSelectColumnAtIndex: index)
             }
         }
@@ -111,7 +125,7 @@ class ZXOptionBar: UIScrollView {
                 cell.setNeedsDisplay()
             }
             
-            if self.barDelegate!.respondsToSelector(Selector("optionBar:didDeselectColumnAtIndex:")) {
+            if flags.respondsToDeselectColumnAtIndex {
                 self.barDelegate!.optionBar!(self, didDeselectColumnAtIndex: index)
             }
         }
@@ -131,15 +145,15 @@ class ZXOptionBar: UIScrollView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        if flag_layoutSubviewsReentrancyGuard {
-            flag_layoutSubviewsReentrancyGuard = false
+        if flags.layoutSubviewsReentrancyGuard {
+            flags.layoutSubviewsReentrancyGuard = false
             
             CATransaction.begin()
             CATransaction.setDisableActions(true)
             self.layoutCells()
             CATransaction.commit()
             
-            flag_layoutSubviewsReentrancyGuard = true
+            flags.layoutSubviewsReentrancyGuard = true
         }
     }
     
@@ -209,8 +223,6 @@ extension ZXOptionBar {
             
             var cell: ZXOptionBarCell = self.barDataSource!.optionBar(self, cellForColumnAtIndex: indexToAdd)
             cell.frame = self.rectForColumnAtIndex(indexToAdd)
-            cell.layer.zPosition = 0
-            cell.setNeedsDisplay()
             cell.prepareForDisplay()
             cell.index = indexToAdd
             cell.selected = (indexToAdd == self.selectedIndex)

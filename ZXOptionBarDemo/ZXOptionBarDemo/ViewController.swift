@@ -45,6 +45,9 @@ class ViewController: UIViewController,ZXOptionBarDelegate,ZXOptionBarDataSource
         println(index)
     }
     
+    func optionBar(optionBar: ZXOptionBar, didSelectColumnAtIndex index: Int) {
+        println(index)
+    }
     
 }
 
