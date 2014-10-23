@@ -15,6 +15,7 @@ class ViewController: UIViewController,ZXOptionBarDelegate,ZXOptionBarDataSource
         super.viewDidLoad()
         optionBar = ZXOptionBar(frame: CGRectMake(0, 100, UIScreen.mainScreen().bounds.size.width, 100), barDelegate: self, barDataSource: self)
         self.view.addSubview(optionBar!)
+    
     }
     
     
